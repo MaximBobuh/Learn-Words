@@ -71,7 +71,6 @@ void ProfileSelectWidget::loadProfiles()
     {
         if(name == "." || name == "..")
             continue;
-
         createItem(name);
     }
 }
@@ -116,7 +115,7 @@ void ProfileSelectWidget::slotCreateProfile()
 //-------------------------------------------
 
 void ProfileSelectWidget::slotSelectProfile()
-{qDebug() << profiles.currentItem()->text();
+{
     emit signalSelectProfile(profiles.currentItem()->text());
 }
 
