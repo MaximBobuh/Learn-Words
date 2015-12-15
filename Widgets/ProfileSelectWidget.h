@@ -12,7 +12,7 @@ class ProfileSelectWidget : public QWidget
 private:
     void createWidget();
     void loadProfiles();
-    void createItem(const QString&);  // Create QListWidgetItem and add to the QListWidget
+    void createItem(const QString&);  // Create QListWidgetItem and add to the QListWidget.
 
 public:
     ProfileSelectWidget(QWidget* par = 0);
