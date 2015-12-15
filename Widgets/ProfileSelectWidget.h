@@ -3,6 +3,7 @@
 
 #include <QListWidget>
 #include <QPushButton>
+#include <QDir>
 
 class ProfileSelectWidget : public QWidget
 {
@@ -10,21 +11,26 @@ class ProfileSelectWidget : public QWidget
 
 private:
     void createWidget();
-    void checkExistProfile();
     void loadProfiles();
+    void createItem(const QString&);  // Create QListWidgetItem and add to the QListWidget
 
 public:
     ProfileSelectWidget(QWidget* par = 0);
 
 public slots:
-    void slotAddProfile();
+    void slotCreateProfile();
     void slotSelectProfile();
     void slotDeleteProfile();
+    void slotChangeCurrItem();
+
+signals:
+    void signalSelectProfile(QString);
 
 private:
     QListWidget profiles;
     QPushButton butSelect;
     QPushButton butDelete;
+    QDir dir;
 };
 
 #endif // PROFILESELECTWIDGET_H
