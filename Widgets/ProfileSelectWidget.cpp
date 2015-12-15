@@ -39,12 +39,12 @@ void ProfileSelectWidget::createWidget()
     connect(&profiles,  SIGNAL(doubleClicked(QModelIndex)), SLOT(slotSelectProfile()));
     connect(&profiles,  SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), SLOT(slotChangeCurrItem()));
 
+    //--------------------
+    
     QHBoxLayout* hbox = new QHBoxLayout;
     hbox->addWidget(butCreate);
     hbox->addWidget(&butSelect);
     hbox->addWidget(&butDelete);
-
-    //--------------------
 
     QVBoxLayout* vbox = new QVBoxLayout;
     vbox->addWidget(lbl);
