@@ -10,10 +10,13 @@ class ProfileWidget : public QWidget
 public:
     ProfileWidget();
 
+public slots:
+    void slotMyDictionary();
+    void slotWholeDictionary();
+    void slotTraining();
+
 signals:
-    void signalMyDictionary();
-    void signalWholeDictionary();
-    void signalTraining();
+    void signalBack();
 
 private:
     void createWidget();
