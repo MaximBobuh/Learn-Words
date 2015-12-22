@@ -27,6 +27,7 @@ void WordWidget::createWidget()
 
     setLayout(hbox);
     setFixedHeight(45);
+    setMinimumWidth(650);
 
     textValue.setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 }
