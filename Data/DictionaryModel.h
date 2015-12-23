@@ -2,6 +2,7 @@
 #define DICTIONARYMODEL_H
 
 #include <set>
+#include <memory>
 #include <QString>
 #include <QFile>
 #include <QTextStream>
@@ -12,13 +13,13 @@
 
 //-------------------------------------
 
-template<typename Container = std::set<WordData> >
+template<typename Container = std::set<WordData>>
 class DictionaryModel
 {
 public:
-    DictionaryModel(const QString& fileName = "");
+    DictionaryModel(const QString& fileName = "", bool MyDict = false );
 
-    bool loadFromFile(const QString&);
+    bool loadFromFile(const QString&, bool);
     void saveToFile(const QString&) const;
 
     int find(const QString&) const;
@@ -27,43 +28,68 @@ private:
     Container data;
 };
 
+//-------------------------------------
+
+class SimpleReader
+{
+public:
+    virtual void read(const QStringList& in, WordData& word)
+    {
+        auto pos = in.begin();
+        word.original      = *(pos++);
+        word.transcription = *(pos++);
+        word.translation   = *(pos++);
+    }
+protected:
+    QStringList::iterator pos;
+};
+
+class FullReader : public SimpleReader
+{
+public:
+    void read(const QStringList& in, WordData& word)
+    {
+        SimpleReader::read(in, word);    // "Common dictionary" contains only 3 members.
+        word.date  = (pos++)->toInt();   // "My Dictionary" besides contains a date and level of the User.
+        word.level = (pos)->toInt();
+    }
+};
+
+inline SimpleReader* createReader(bool full)
+{
+    return (full ? new FullReader : new SimpleReader);
+}
 
 //--------------------------------------------------------------------
 // Implementation.
 //--------------------------------------------------------------------
 
 template<typename Container>
-DictionaryModel<Container>::DictionaryModel(const QString& fileName)
+DictionaryModel<Container>::DictionaryModel(const QString& fileName, bool full)
 {
     if(!fileName.isEmpty())
-        loadFromFile(fileName);
+        loadFromFile(fileName, full);
 }
 
 //--------------------------------------------------------------------
 
 template<typename Container>
-bool DictionaryModel<Container>::loadFromFile(const QString& fileName)
+bool DictionaryModel<Container>::loadFromFile(const QString& fileName, bool full)
 {
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return false;
 
+
     WordData word;
     QTextStream text(&file);
+
+    std::shared_ptr<SimpleReader> reader(createReader(full));
+
     while(!text.atEnd())
     {
         QStringList list = text.readLine().split(QRegularExpression("\\s+"));
-        auto pos = list.begin();
-
-        word.original      = *(pos++);
-        word.transcription = *(pos++);
-        word.translation   = *(pos++);
-
-        if(list.size() == 5)
-        {
-            word.date  = (pos++)->toInt();
-            word.level = (pos)->toInt();
-        }
+        reader.get()->read(list, word);
         data.insert(word);
     }
 }
