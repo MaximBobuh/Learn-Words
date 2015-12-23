@@ -92,6 +92,7 @@ bool DictionaryModel<Container>::loadFromFile(const QString& fileName, bool full
         reader.get()->read(list, word);
         data.insert(word);
     }
+    return true;
 }
 
 //--------------------------------------------------------------------
