@@ -2,6 +2,7 @@
 #define DICTIONARYMODEL_H
 
 #include <set>
+#include <list>
 #include <memory>
 #include <QString>
 #include <QFile>
@@ -9,12 +10,27 @@
 #include <QRegularExpression>
 
 #include "WordData.h"
+#include "Reader.h"
 #include <QDebug>
+
+
 
 //-------------------------------------
 
+class BaseModel
+{
+public:
+    virtual bool loadFromFile(const QString&, bool) = 0;
+    virtual void saveToFile(const QString&) const = 0;
+    virtual int find(const QString&) const = 0;
+
+    virtual ~BaseModel(){}
+};
+
+//--------------------------------------------------------------
+
 template<typename Container = std::set<WordData>>
-class DictionaryModel
+class DictionaryModel : public BaseModel
 {
 public:
     DictionaryModel(const QString& fileName = "", bool MyDict = false );
@@ -23,44 +39,26 @@ public:
     void saveToFile(const QString&) const;
 
     int find(const QString&) const;
+    void addWord(const WordData& word) { data.insert(word); }
 
 private:
     Container data;
 };
 
-//-------------------------------------
+//--------------------------------------------------------------
 
-class SimpleReader
+// Factory method.
+inline BaseModel* createModel(int i)
 {
-public:
-    virtual void read(const QStringList& in, WordData& word)
-    {
-        auto pos = in.begin();
-        word.original      = *(pos++);
-        word.transcription = *(pos++);
-        word.translation   = *(pos++);
-    }
-    virtual ~SimpleReader(){}
-    
-protected:
-    QStringList::iterator pos;
-};
-
-class FullReader : public SimpleReader
-{
-public:
-    void read(const QStringList& in, WordData& word)
-    {
-        SimpleReader::read(in, word);    // "Common dictionary" contains only 3 members.
-        word.date  = (pos++)->toInt();   // "My Dictionary" besides contains a date and level of the User.
-        word.level = (pos)->toInt();
-    }
-};
-
-inline SimpleReader* createReader(bool full)
-{
-    return (full ? new FullReader : new SimpleReader);
+    BaseModel* model = 0;
+    if(i == 0)
+        model = new DictionaryModel<std::list<WordData> >;
+    else
+        model = new DictionaryModel<>; // std::set<WordData> .
+    return model;
 }
+
+
 
 //--------------------------------------------------------------------
 // Implementation.
@@ -92,7 +90,7 @@ bool DictionaryModel<Container>::loadFromFile(const QString& fileName, bool full
     {
         QStringList list = text.readLine().split(QRegularExpression("\\s+"));
         reader.get()->read(list, word);
-        data.insert(word);
+        data.insert(data.begin(), word);
     }
     return true;
 }
@@ -123,5 +121,6 @@ int DictionaryModel<Container>::find(const QString& word) const
     auto pos = std::find(data.begin(), data.end(), word);
     return (pos == data.end() ? -1 : std::distance(data.begin(), pos));
 }
+
 
 #endif // DICTIONARYMODEL_H
