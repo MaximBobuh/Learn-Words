@@ -40,6 +40,8 @@ public:
         word.transcription = *(pos++);
         word.translation   = *(pos++);
     }
+    virtual ~SimpleReader(){}
+    
 protected:
     QStringList::iterator pos;
 };
