@@ -102,7 +102,7 @@ void DictionaryModel<Container>::saveToFile(const QString& fileName) const
 {
     QFile file(fileName);
     if(!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return false;
+        return;
 
     QTextStream text(&file);
     for(auto pos = data.begin(); pos != data.end(); ++pos)
