@@ -23,6 +23,9 @@ public:
     virtual bool loadFromFile(const QString&, bool) = 0;
     virtual void saveToFile(const QString&) const = 0;
     virtual int find(const QString&) const = 0;
+    virtual int size() const = 0;
+    virtual const WordData& getCurrWord() = 0;
+    virtual void resetCurrWord() = 0;
 
     virtual ~BaseModel(){}
 };
@@ -39,10 +42,16 @@ public:
     void saveToFile(const QString&) const;
 
     int find(const QString&) const;
+    int size() const { return data.size(); }
     void addWord(const WordData& word) { data.insert(word); }
+
+    const WordData& getCurrWord() { return *(currWord++); }
+    void resetCurrWord() { currWord = data.begin(); }
+
 
 private:
     Container data;
+    typename Container::iterator currWord;
 };
 
 //--------------------------------------------------------------
@@ -92,6 +101,7 @@ bool DictionaryModel<Container>::loadFromFile(const QString& fileName, bool full
         reader.get()->read(list, word);
         data.insert(data.begin(), word);
     }
+    resetCurrWord();
     return true;
 }
 
@@ -122,5 +132,7 @@ int DictionaryModel<Container>::find(const QString& word) const
     return (pos == data.end() ? -1 : std::distance(data.begin(), pos));
 }
 
+
+//--------------------------------------------------------------------
 
 #endif // DICTIONARYMODEL_H
