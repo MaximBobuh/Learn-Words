@@ -10,7 +10,10 @@ struct WordData
                                      date(d), level(l) {}
 
     bool operator <(const WordData& other)  const { return original < other.original; }
-    bool operator ==(const WordData& other) const { return original == other.original; }
+    bool operator ==(const WordData& other) const
+    {
+        return QString::compare(original, other.original, Qt::CaseInsensitive) == 0;
+    }
 
     //-------------------
 
