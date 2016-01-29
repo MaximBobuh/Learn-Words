@@ -22,11 +22,18 @@ void DictionaryView::setModel(BaseModel *mod)
         delete words[i];
     words.clear();
 
+
     int sizeModel = model->size();
     for(int i = 0; i < sizeModel; ++i)
     {
-        const WordData& word = model->getCurrWord();qDebug() << word.original;
-        WordWidget* tmp = new WordWidget(word);
-        tmp->show();
+        const WordData& word = model->getCurrWord();   //qDebug() << word.original;
+        words.push_back(new WordWidget(word, this));
     }
+
+    QVBoxLayout* vBox = new QVBoxLayout;
+    for(auto word : words)
+        vBox->addWidget(word);
+
+    vBox->setAlignment(Qt::AlignTop);
+    setLayout(vBox);
 }
