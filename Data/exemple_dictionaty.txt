@@ -1,0 +1,84 @@
+word - слово
+cat - кошка
+straight  —  прямо
+stuff  —  материал
+suddenly  —  вдруг
+suffer  —  страдать
+either  —  один_из_двух
+frighten  —  пугать
+hang  —  вешать
+neither  —  ни_тот,_ни_другой
+pass  —  идти,_проходить
+peace  —  мир
+plant  —  растение
+account  —  счёт
+
+act  —  действовать
+
+action  —  действие
+
+activity  —  деятельность
+
+add  —  добавлять
+
+address  —  адрес
+
+afraid  —  испуганный
+
+age  —  возраст
+
+ago  —  тому назад
+
+aim  —  цель
+
+air  —  воздух
+
+alive  —  живой
+
+allow  —  позволять
+
+alone  —  единственный, один
+
+also  —  тоже,_также
+
+although  —  хотя
+
+always  —  всегда
+
+american  —  американский
+
+and  —  и,_а
+
+animal  —  животное
+
+another  —  ещё_один,_другой
+
+anybody  —  кто-нибудь
+
+anymore  —  больше_не
+
+anyone  —  кто-нибудь
+
+anything  —  что-нибудь
+
+anyway  —  как_бы_то_ни_было
+
+anywhere  —  где-нибудь
+
+area  —  площадь
+
+arm  —  рука_(от_кисти_до_плеча)
+
+art  —  искусство
+
+attack  —  атаковать
+
+attention  —  внимание
+
+away  —  далеко
+
+baby  —  ребёнок,_младенец
+
+back  —  обратно,_назад
+
+bad  —  плохой
