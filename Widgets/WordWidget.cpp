@@ -15,7 +15,7 @@ WordWidget::WordWidget(const WordData& data, QWidget *par) : QWidget(par)
 void WordWidget::createWidget()
 {
     QPushButton* delBut = new QPushButton(this);
-    delBut->setStyleSheet("border-image: url(:/delete.png); border-width: 1px; ");
+    //delBut->setStyleSheet("border-image: url(:/delete.png); border-width: 1px; ");
 
     connect(delBut, SIGNAL(clicked(bool)), SIGNAL(signalDelete()));
     connect(&check, SIGNAL(clicked(bool)), SIGNAL(signalChangeCheck()));
@@ -36,7 +36,10 @@ void WordWidget::createWidget()
 
 void WordWidget::setWord(const WordData& word)
 {
+    QString translation(word.translation);
+    translation.replace(QString("_"), QString(" "));
+
     QString text = word.original + (word.transcription.isEmpty() ? "" : " [" + word.transcription + "] ")
-            + " - " + word.translation;
+            + " - " + translation;
     textValue.setText("<p><font size=\"5\" color=\"midnightblue\" face=\"Arial\">  " + text + "</font> </p>");
 }
