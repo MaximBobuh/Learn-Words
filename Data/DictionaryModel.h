@@ -13,8 +13,6 @@
 #include "Reader.h"
 #include <QDebug>
 
-
-
 //-------------------------------------
 
 class BaseModel
@@ -87,8 +85,10 @@ bool DictionaryModel<Container>::loadFromFile(const QString& fileName, bool full
 {
     QFile file(fileName);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        qDebug() << "can't open file";
         return false;
-
+    }
 
     WordData word;
     QTextStream text(&file);
@@ -98,6 +98,9 @@ bool DictionaryModel<Container>::loadFromFile(const QString& fileName, bool full
     while(!text.atEnd())
     {
         QStringList list = text.readLine().split(QRegularExpression("\\s+"));
+        if(list.begin()->isEmpty())
+            continue;
+        
         reader.get()->read(list, word);
         data.insert(data.begin(), word);
     }
